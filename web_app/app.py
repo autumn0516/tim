@@ -17,6 +17,7 @@ import logging
 from video_tool import VideoGenerator
 from web_app.ai_processor import AIContentProcessor
 from web_app.video_builder import VideoBuilder
+from web_app.workflow_engine import WorkflowEngine
 
 # 配置
 UPLOAD_FOLDER = 'web_app/static/uploads'
@@ -44,6 +45,7 @@ os.makedirs(os.path.join(UPLOAD_FOLDER, 'audio'), exist_ok=True)
 # 初始化AI处理器和视频构建器
 ai_processor = AIContentProcessor()
 video_builder = VideoBuilder()
+workflow_engine = WorkflowEngine()
 
 
 def allowed_file(filename, allowed_extensions):
@@ -56,6 +58,12 @@ def allowed_file(filename, allowed_extensions):
 def index():
     """主页"""
     return render_template('index.html')
+
+
+@app.route('/workflow')
+def workflow():
+    """工作流编辑器页面"""
+    return render_template('workflow.html')
 
 
 @app.route('/api/upload/image', methods=['POST'])
@@ -231,6 +239,35 @@ def delete_file(filename):
     except Exception as e:
         logger.error(f"Error deleting file: {e}")
         return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/workflow/execute', methods=['POST'])
+def execute_workflow():
+    """
+    执行工作流
+
+    接收：
+    - name: 工作流名称
+    - nodes: 节点列表
+    - connections: 连接列表
+    """
+    try:
+        data = request.json
+        logger.info(f"Executing workflow: {data.get('name', 'Unnamed')}")
+
+        # Execute workflow
+        output_file = workflow_engine.execute(data)
+
+        return jsonify({
+            'success': True,
+            'video_file': output_file,
+            'video_url': url_for('static', filename=f'uploads/videos/{output_file}'),
+            'message': '工作流执行成功！'
+        })
+
+    except Exception as e:
+        logger.error(f"Error executing workflow: {e}", exc_info=True)
+        return jsonify({'error': f'执行工作流时出错: {str(e)}'}), 500
 
 
 @app.route('/health')
