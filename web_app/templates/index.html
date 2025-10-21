@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI短视频生成工具</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-video"></i>
+                <h1>AI短视频生成工具</h1>
+            </div>
+            <p class="subtitle">上传图片、添加文本、选择音乐，AI帮你生成专业短视频</p>
+        </header>
+
+        <!-- 主要内容区 -->
+        <main class="main-content">
+            <!-- 上传区域 -->
+            <section class="upload-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-cloud-upload-alt"></i> 上传内容</h2>
+                </div>
+
+                <!-- 图片上传 -->
+                <div class="upload-box">
+                    <h3><i class="fas fa-images"></i> 图片</h3>
+                    <div class="dropzone" id="imageDropzone">
+                        <i class="fas fa-camera"></i>
+                        <p>拖拽图片到这里或点击上传</p>
+                        <p class="hint">支持 JPG, PNG, GIF 格式</p>
+                        <input type="file" id="imageInput" multiple accept="image/*" hidden>
+                    </div>
+                    <div class="preview-container" id="imagePreview"></div>
+                </div>
+
+                <!-- 文本输入 -->
+                <div class="upload-box">
+                    <h3><i class="fas fa-pen"></i> 文本描述</h3>
+                    <textarea
+                        id="textInput"
+                        placeholder="输入视频的文本内容或描述，AI会根据内容智能生成字幕和选择合适的效果...&#10;&#10;例如：&#10;- 这是我们家庭旅行的美好回忆&#10;- 展示公司产品的专业介绍视频&#10;- 充满活力的运动时刻记录"
+                        rows="6"
+                    ></textarea>
+                </div>
+
+                <!-- 音频上传 -->
+                <div class="upload-box">
+                    <h3><i class="fas fa-music"></i> 背景音乐（可选）</h3>
+                    <div class="dropzone small" id="audioDropzone">
+                        <i class="fas fa-headphones"></i>
+                        <p>上传背景音乐</p>
+                        <p class="hint">支持 MP3, WAV, M4A 格式</p>
+                        <input type="file" id="audioInput" accept="audio/*" hidden>
+                    </div>
+                    <div id="audioPreview"></div>
+                </div>
+            </section>
+
+            <!-- 设置区域 -->
+            <section class="settings-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-cog"></i> 视频设置</h2>
+                    <button class="btn-toggle" onclick="toggleSettings()">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+
+                <div class="settings-content" id="settingsContent" style="display: none;">
+                    <div class="setting-row">
+                        <label>每张图片时长（秒）</label>
+                        <input type="number" id="durationInput" value="3" min="1" max="10" step="0.5">
+                    </div>
+
+                    <div class="setting-row">
+                        <label>转场效果</label>
+                        <select id="transitionSelect">
+                            <option value="fade">淡入淡出</option>
+                            <option value="slide">滑动</option>
+                            <option value="wipe">擦除</option>
+                            <option value="dissolve">溶解</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-row">
+                        <label>视频分辨率</label>
+                        <select id="resolutionSelect">
+                            <option value="1920x1080">1920x1080 (Full HD)</option>
+                            <option value="1280x720">1280x720 (HD)</option>
+                            <option value="720x1280">720x1280 (竖屏)</option>
+                            <option value="1080x1080">1080x1080 (方形)</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-row">
+                        <label>音频音量</label>
+                        <input type="range" id="volumeInput" min="0" max="100" value="70">
+                        <span id="volumeValue">70%</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 生成按钮 -->
+            <div class="action-section">
+                <button class="btn-generate" id="generateBtn" onclick="generateVideo()">
+                    <i class="fas fa-magic"></i>
+                    <span>AI生成视频</span>
+                </button>
+            </div>
+
+            <!-- 进度显示 -->
+            <div class="progress-section" id="progressSection" style="display: none;">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <p class="progress-text" id="progressText">准备中...</p>
+            </div>
+
+            <!-- AI分析结果 -->
+            <div class="analysis-section" id="analysisSection" style="display: none;">
+                <div class="section-header">
+                    <h2><i class="fas fa-brain"></i> AI分析结果</h2>
+                </div>
+                <div class="analysis-content" id="analysisContent"></div>
+            </div>
+
+            <!-- 结果展示 -->
+            <div class="result-section" id="resultSection" style="display: none;">
+                <div class="section-header">
+                    <h2><i class="fas fa-check-circle"></i> 生成完成</h2>
+                </div>
+                <div class="video-container">
+                    <video id="resultVideo" controls></video>
+                    <div class="video-actions">
+                        <button class="btn-secondary" onclick="downloadVideo()">
+                            <i class="fas fa-download"></i> 下载视频
+                        </button>
+                        <button class="btn-secondary" onclick="shareVideo()">
+                            <i class="fas fa-share-alt"></i> 分享
+                        </button>
+                        <button class="btn-primary" onclick="resetForm()">
+                            <i class="fas fa-plus"></i> 创建新视频
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 历史记录 -->
+            <section class="history-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-history"></i> 历史视频</h2>
+                    <button class="btn-refresh" onclick="loadVideoHistory()">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+                <div class="history-grid" id="historyGrid">
+                    <p class="empty-message">暂无历史记录</p>
+                </div>
+            </section>
+        </main>
+
+        <!-- 页脚 -->
+        <footer class="footer">
+            <p>&copy; 2025 AI短视频生成工具 | Powered by AI & MoviePy</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

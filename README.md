@@ -2,6 +2,8 @@
 
 一个功能强大的短视频生成工具，支持从文本、图片生成视频，添加特效、字幕、音乐等功能。
 
+**🌟 新增Web应用**: 现在支持通过浏览器在线生成视频，无需编程！
+
 ## 功能特性
 
 - 📝 **文本转视频**: 从文本描述生成视频内容
@@ -11,6 +13,8 @@
 - 📊 **字幕生成**: 自动生成和添加字幕
 - ✨ **特效滤镜**: 多种视频特效和滤镜
 - 🎨 **模板支持**: 预设模板快速生成视频
+- 🌐 **Web界面**: 浏览器在线使用，拖拽上传，所见即所得
+- 🤖 **AI智能**: AI自动分析内容，推荐最佳视频风格和效果
 
 ## 安装
 
@@ -43,7 +47,28 @@ pip install -r requirements.txt
 
 ## 快速开始
 
-### 1. 从图片生成视频
+### 方式1: Web应用（推荐）
+
+最简单的使用方式，无需编程：
+
+```bash
+# 启动Web应用
+python -m web_app.app
+```
+
+然后在浏览器中打开 `http://localhost:5000`，即可通过可视化界面：
+- 拖拽上传图片
+- 输入文本描述
+- 上传背景音乐
+- AI自动分析并生成视频
+
+详细使用说明请查看 [Web应用文档](web_app/README.md)
+
+### 方式2: Python API
+
+通过编程方式使用：
+
+#### 1. 从图片生成视频
 
 ```python
 from video_tool import VideoGenerator
@@ -80,7 +105,7 @@ generator.add_audio('temp.mp4', 'background.mp3', 'output.mp4')
 generator.add_subtitles('output.mp4', 'subtitles.srt', 'final.mp4')
 ```
 
-### 3. 使用命令行工具
+### 方式3: 命令行工具
 
 ```bash
 # 从图片生成视频
@@ -116,17 +141,27 @@ output:
 
 ```
 video_tool/
-├── video_tool/           # 主要源代码
+├── video_tool/           # 核心库
 │   ├── core/            # 核心功能模块
-│   │   ├── video_generator.py
-│   │   ├── image_processor.py
-│   │   ├── audio_handler.py
-│   │   └── effects.py
+│   │   ├── video_generator.py  # 视频生成器
+│   │   ├── image_processor.py  # 图片处理
+│   │   ├── audio_handler.py    # 音频处理
+│   │   └── effects.py          # 视频特效
 │   ├── utils/           # 工具函数
-│   │   ├── config.py
-│   │   └── logger.py
+│   │   ├── config.py           # 配置管理
+│   │   └── logger.py           # 日志系统
 │   ├── cli.py           # 命令行接口
 │   └── main.py          # 主入口
+├── web_app/             # Web应用 ⭐ 新增
+│   ├── app.py           # Flask应用
+│   ├── ai_processor.py  # AI内容分析
+│   ├── video_builder.py # 视频构建器
+│   ├── templates/       # HTML模板
+│   │   └── index.html
+│   └── static/          # 静态资源
+│       ├── css/         # 样式文件
+│       ├── js/          # JavaScript
+│       └── uploads/     # 上传文件
 ├── examples/            # 示例代码
 ├── templates/           # 视频模板
 ├── tests/              # 测试文件

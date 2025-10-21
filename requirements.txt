@@ -18,8 +18,13 @@ PyYAML>=6.0
 # Image processing
 scikit-image>=0.21.0
 
+# Web framework
+Flask>=3.0.0
+Werkzeug>=3.0.0
+
 # Optional: AI features
-# openai>=1.0.0  # For text-to-image generation
+openai>=1.0.0  # For AI content analysis
+# anthropic>=0.18.0  # For Claude AI integration
 # replicate>=0.15.0  # For AI video generation
 
 # Development
