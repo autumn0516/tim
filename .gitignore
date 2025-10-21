@@ -1,0 +1,76 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Video files (for testing)
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.flv
+*.wmv
+!examples/sample.mp4
+
+# Audio files
+*.mp3
+*.wav
+*.aac
+!examples/sample.mp3
+
+# Image files (large)
+*.psd
+*.xcf
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+temp/
+tmp/
+*.tmp
+
+# Output directory
+output/
+renders/
+
+# Configuration (if contains sensitive data)
+# config.yaml

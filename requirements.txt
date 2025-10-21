@@ -1,0 +1,29 @@
+# Core dependencies
+moviepy>=1.0.3
+opencv-python>=4.8.0
+numpy>=1.24.0
+Pillow>=10.0.0
+
+# Audio processing
+pydub>=0.25.1
+
+# CLI
+click>=8.1.0
+rich>=13.0.0
+tqdm>=4.65.0
+
+# Configuration
+PyYAML>=6.0
+
+# Image processing
+scikit-image>=0.21.0
+
+# Optional: AI features
+# openai>=1.0.0  # For text-to-image generation
+# replicate>=0.15.0  # For AI video generation
+
+# Development
+pytest>=7.4.0
+pytest-cov>=4.1.0
+black>=23.7.0
+flake8>=6.1.0

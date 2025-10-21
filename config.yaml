@@ -1,0 +1,113 @@
+# 视频配置
+video:
+  # 默认分辨率
+  default_resolution:
+    width: 1920
+    height: 1080
+
+  # 帧率
+  default_fps: 30
+
+  # 编码器
+  default_codec: "libx264"
+
+  # 视频质量 (crf: 0-51, 越小质量越好)
+  quality:
+    high: 18
+    medium: 23
+    low: 28
+
+  # 转场效果持续时间(秒)
+  transition_duration: 1.0
+
+# 音频配置
+audio:
+  # 采样率
+  default_sample_rate: 44100
+
+  # 比特率
+  default_bitrate: "192k"
+
+  # 音频编码器
+  default_codec: "aac"
+
+  # 默认音量 (0.0-1.0)
+  default_volume: 0.8
+
+# 图片配置
+image:
+  # 每张图片默认显示时长(秒)
+  default_duration: 3.0
+
+  # 缩放模式: fill, fit, stretch
+  resize_mode: "fill"
+
+  # 背景颜色 (当图片比例不匹配时)
+  background_color: [0, 0, 0]  # RGB
+
+# 字幕配置
+subtitle:
+  # 字体
+  font_family: "Arial"
+  font_size: 48
+
+  # 颜色
+  font_color: "white"
+
+  # 位置: top, center, bottom
+  position: "bottom"
+
+  # 边距(像素)
+  margin: 50
+
+  # 描边
+  stroke_color: "black"
+  stroke_width: 2
+
+# 特效配置
+effects:
+  # 可用的转场效果
+  transitions:
+    - fade
+    - slide
+    - wipe
+    - dissolve
+
+  # 可用的滤镜
+  filters:
+    - blur
+    - sharpen
+    - vintage
+    - grayscale
+    - sepia
+
+# 输出配置
+output:
+  # 默认输出格式
+  default_format: "mp4"
+
+  # 输出目录
+  output_dir: "./output"
+
+  # 临时文件目录
+  temp_dir: "./temp"
+
+  # 是否保留临时文件
+  keep_temp_files: false
+
+# 日志配置
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  log_file: "video_tool.log"
+  console_output: true
+
+# 性能配置
+performance:
+  # 线程数 (0 = 自动检测)
+  threads: 0
+
+  # 内存限制(MB)
+  memory_limit: 2048
+
+  # 启用GPU加速
+  use_gpu: false
