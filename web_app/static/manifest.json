@@ -1,0 +1,26 @@
+{
+  "name": "AI短视频生成工具",
+  "short_name": "视频工具",
+  "description": "AI驱动的短视频生成工具，轻松创作专业视频",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/static/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["productivity", "multimedia"],
+  "screenshots": [],
+  "related_applications": [],
+  "prefer_related_applications": false
+}

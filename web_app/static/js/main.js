@@ -32,13 +32,15 @@ function initializeApp() {
     console.log('App initialized');
 }
 
-// 设置拖拽区域
+// 设置拖拽区域（增强移动端支持）
 function setupDropzone(dropzoneId, inputId, handler) {
     const dropzone = document.getElementById(dropzoneId);
     const input = document.getElementById(inputId);
 
+    // 点击上传
     dropzone.addEventListener('click', () => input.click());
 
+    // 桌面端拖拽支持
     dropzone.addEventListener('dragover', (e) => {
         e.preventDefault();
         dropzone.classList.add('dragover');
@@ -57,6 +59,15 @@ function setupDropzone(dropzoneId, inputId, handler) {
             handler(files);
         }
     });
+
+    // 移动端触摸反馈
+    dropzone.addEventListener('touchstart', (e) => {
+        dropzone.style.opacity = '0.8';
+    }, { passive: true });
+
+    dropzone.addEventListener('touchend', (e) => {
+        dropzone.style.opacity = '1';
+    }, { passive: true });
 }
 
 // 处理图片输入
@@ -76,8 +87,11 @@ async function handleImageUpload(files) {
         }
 
         try {
+            // 移动端图片压缩
+            const processedFile = await compressImageForMobile(file);
+
             const formData = new FormData();
-            formData.append('file', file);
+            formData.append('file', processedFile);
 
             const response = await fetch('/api/upload/image', {
                 method: 'POST',
@@ -389,8 +403,14 @@ function showVideoResult(video) {
     currentVideoUrl = video.url;
     videoElement.src = video.url;
 
+    // 移动端自动播放控制
+    if (isMobileDevice()) {
+        videoElement.setAttribute('playsinline', '');
+        videoElement.setAttribute('controls', '');
+    }
+
     section.style.display = 'block';
-    section.scrollIntoView({ behavior: 'smooth' });
+    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 // 下载视频
@@ -533,8 +553,96 @@ function showNotification(message, type = 'success') {
 
     document.body.appendChild(notification);
 
+    // 移动端震动反馈
+    if (navigator.vibrate && type === 'error') {
+        navigator.vibrate(200);
+    } else if (navigator.vibrate && type === 'success') {
+        navigator.vibrate(100);
+    }
+
     setTimeout(() => {
         notification.style.opacity = '0';
         setTimeout(() => notification.remove(), 300);
     }, 3000);
+}
+
+// 检测是否为移动设备
+function isMobileDevice() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+           (window.innerWidth <= 768);
+}
+
+// 优化移动端滚动
+function scrollToElement(element, offset = 0) {
+    const elementPosition = element.getBoundingClientRect().top;
+    const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+    window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+    });
+}
+
+// 防止移动端双击缩放
+let lastTouchEnd = 0;
+document.addEventListener('touchend', function(event) {
+    const now = Date.now();
+    if (now - lastTouchEnd <= 300) {
+        event.preventDefault();
+    }
+    lastTouchEnd = now;
+}, false);
+
+// 移动端适配：监听屏幕旋转
+window.addEventListener('orientationchange', function() {
+    // 屏幕旋转后重新调整布局
+    setTimeout(() => {
+        window.scrollTo(0, window.pageYOffset);
+    }, 100);
+});
+
+// 移动端图片压缩（避免上传过大文件）
+async function compressImageForMobile(file) {
+    // 只在移动端且文件较大时压缩
+    if (!isMobileDevice() || file.size < 2 * 1024 * 1024) {
+        return file;
+    }
+
+    return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                let width = img.width;
+                let height = img.height;
+
+                // 限制最大尺寸
+                const maxSize = 1920;
+                if (width > maxSize || height > maxSize) {
+                    if (width > height) {
+                        height = (height / width) * maxSize;
+                        width = maxSize;
+                    } else {
+                        width = (width / height) * maxSize;
+                        height = maxSize;
+                    }
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+
+                canvas.toBlob((blob) => {
+                    resolve(new File([blob], file.name, {
+                        type: 'image/jpeg',
+                        lastModified: Date.now()
+                    }));
+                }, 'image/jpeg', 0.85);
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    });
 }

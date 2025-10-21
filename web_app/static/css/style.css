@@ -505,37 +505,318 @@ button {
 }
 
 /* 响应式设计 */
+
+/* 平板设备 (768px - 1024px) */
+@media (max-width: 1024px) {
+    .container {
+        max-width: 100%;
+        padding: 15px;
+    }
+
+    .history-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+}
+
+/* 移动设备 (最大768px) */
 @media (max-width: 768px) {
+    /* 基础布局 */
     .container {
         padding: 10px;
     }
 
+    /* 头部优化 */
+    .header {
+        padding: 25px 15px;
+        margin-bottom: 20px;
+    }
+
+    .logo i {
+        font-size: 36px;
+    }
+
     .header h1 {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
     }
 
     .subtitle {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
+        line-height: 1.4;
     }
 
+    /* 区块优化 */
     section {
-        padding: 20px;
+        padding: 20px 15px;
+        margin-bottom: 20px;
     }
 
-    .setting-row {
-        grid-template-columns: 1fr;
+    .section-header {
+        margin-bottom: 20px;
     }
 
+    .section-header h2 {
+        font-size: 1.3rem;
+    }
+
+    /* 上传框优化 */
+    .upload-box h3 {
+        font-size: 1.1rem;
+    }
+
+    .dropzone {
+        padding: 30px 20px;
+    }
+
+    .dropzone i {
+        font-size: 2.5rem;
+    }
+
+    .dropzone p {
+        font-size: 0.95rem;
+    }
+
+    .dropzone.small {
+        padding: 25px 15px;
+    }
+
+    /* 预览优化 */
     .preview-container {
         grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 10px;
+    }
+
+    .preview-item .remove-btn {
+        opacity: 1; /* 移动端始终显示删除按钮 */
+    }
+
+    /* 文本输入优化 */
+    textarea {
+        padding: 12px;
+        font-size: 16px; /* 防止iOS自动缩放 */
+    }
+
+    /* 音频预览 */
+    .audio-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    /* 设置区域 */
+    .setting-row {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .setting-row label {
+        font-size: 0.95rem;
+    }
+
+    .setting-row input[type="number"],
+    .setting-row select {
+        padding: 12px;
+        font-size: 16px; /* 防止iOS自动缩放 */
+    }
+
+    /* 按钮优化 - 更大的触摸区域 */
+    button {
+        padding: 14px 20px;
+        font-size: 1rem;
+        min-height: 48px; /* WCAG触摸目标最小尺寸 */
+    }
+
+    .btn-generate {
+        padding: 18px;
+        font-size: 1.1rem;
+        min-height: 56px;
+    }
+
+    .btn-toggle,
+    .btn-refresh {
+        min-width: 44px;
+        min-height: 44px;
+    }
+
+    /* 进度条 */
+    .progress-section {
+        padding: 20px 15px;
+    }
+
+    .progress-text {
+        font-size: 1rem;
+    }
+
+    /* AI分析 */
+    .analysis-item {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .analysis-item strong {
+        min-width: auto;
+    }
+
+    /* 视频结果 */
+    .video-container video {
+        max-width: 100%;
+        border-radius: 6px;
     }
 
     .video-actions {
         flex-direction: column;
+        gap: 10px;
     }
 
     .video-actions button {
         width: 100%;
+        justify-content: center;
+    }
+
+    /* 历史记录 */
+    .history-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .history-item video {
+        aspect-ratio: 16/9;
+    }
+
+    /* 通知优化 */
+    .notification {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        min-width: auto;
+        max-width: calc(100% - 20px);
+    }
+
+    /* 页脚 */
+    .footer {
+        padding: 20px 15px;
+        font-size: 0.9rem;
+    }
+}
+
+/* 小屏手机 (最大480px) */
+@media (max-width: 480px) {
+    /* 头部 */
+    .header {
+        padding: 20px 10px;
+    }
+
+    .logo {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .logo i {
+        font-size: 32px;
+    }
+
+    .header h1 {
+        font-size: 1.4rem;
+        text-align: center;
+    }
+
+    .subtitle {
+        font-size: 0.8rem;
+    }
+
+    /* 区块 */
+    section {
+        padding: 15px 10px;
+    }
+
+    .section-header h2 {
+        font-size: 1.2rem;
+    }
+
+    /* 上传 */
+    .dropzone {
+        padding: 25px 15px;
+    }
+
+    .dropzone i {
+        font-size: 2rem;
+    }
+
+    .dropzone p {
+        font-size: 0.9rem;
+    }
+
+    .preview-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    /* 按钮 */
+    .btn-generate {
+        font-size: 1rem;
+    }
+
+    /* 历史网格 */
+    .history-info p {
+        font-size: 0.85rem;
+    }
+}
+
+/* 横屏模式优化 */
+@media (max-width: 768px) and (orientation: landscape) {
+    .header {
+        padding: 15px;
+    }
+
+    .logo {
+        flex-direction: row;
+    }
+
+    .header h1 {
+        font-size: 1.5rem;
+    }
+
+    .preview-container {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+}
+
+/* 触摸设备优化 */
+@media (hover: none) and (pointer: coarse) {
+    /* 移除悬停效果，使用active状态 */
+    .dropzone:hover {
+        border-color: var(--border-color);
+        background: var(--surface-light);
+    }
+
+    .dropzone:active {
+        border-color: var(--primary-color);
+        background: rgba(99, 102, 241, 0.1);
+    }
+
+    button:hover {
+        transform: none;
+    }
+
+    button:active {
+        transform: scale(0.98);
+    }
+
+    .history-item:hover {
+        transform: none;
+    }
+
+    .history-item:active {
+        transform: scale(0.98);
+    }
+
+    /* 确保删除按钮始终可见 */
+    .preview-item .remove-btn {
+        opacity: 1;
+    }
+
+    /* 增大可点击区域 */
+    .remove-btn {
+        width: 36px;
+        height: 36px;
     }
 }
 
